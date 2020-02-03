@@ -49,7 +49,7 @@ export default {
       let contacts = [];
       let params = { page: this.page };
 
-      // Changed to axios to follow best vue practices (also cleaner)
+      // Changed to axios
       axios.get('http://0.0.0.0:11111/api/contacts', { params }).then(response => {
         this.pagination = response.data.meta;
         response.data.data.forEach(contact => {
@@ -58,8 +58,9 @@ export default {
           });
         });
       });
-      
+
       // Set time out to .5 seconds to avoid jump (sets this.contacts once data has been loaded) - Easiest solution :) 
+      // Would rather use vuex store
       setTimeout(() => {
         this.contacts = contacts;
       }, 500);
