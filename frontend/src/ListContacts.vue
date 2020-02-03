@@ -44,7 +44,7 @@ export default {
   },
 
   methods: {
-      fetchContacts() {
+    fetchContacts() {
       this.contacts = null;
       let contacts = [];
       let params = { page: this.page };
