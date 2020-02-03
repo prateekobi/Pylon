@@ -58,6 +58,7 @@ export default {
           });
         });
       });
+      
       // Set time out to .5 seconds to avoid jump (sets this.contacts once data has been loaded) - Easiest solution :) 
       setTimeout(() => {
         this.contacts = contacts;
