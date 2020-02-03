@@ -17,7 +17,7 @@
 .view-projects {
   padding: 1rem;
 }
-
+``
 .view-projects .pagination {
   padding: 0 1rem;
 }
