@@ -23,8 +23,7 @@
 </style>
 
 <script>
-import {http} from './api.js';
-
+import axios from 'axios'; // Import axios
 import Pagination from './Pagination.vue';
 
 export default {
@@ -45,19 +44,25 @@ export default {
   },
 
   methods: {
-    // TODO: this is bugged, contacts appear as they load up rather than all at once.
-    async fetchContacts() {
+      fetchContacts() {
       this.contacts = null;
       let contacts = [];
-      let params = {page: this.page};
-      let response = await http.get('/contacts', {params});
-      this.pagination = response.data.meta;
-      response.data.data.forEach(async contact => {
-        let response = await http.get('/contacts/' + contact.id);
-        contacts.push(response.data.data);
+      let params = { page: this.page };
+
+      // Changed to axios to follow best vue practices (also cleaner)
+      axios.get('http://0.0.0.0:11111/api/contacts', { params }).then(response => {
+        this.pagination = response.data.meta;
+        response.data.data.forEach(contact => {
+          axios.get(`http://0.0.0.0:11111/api/contacts/${contact.id}`).then(response => {
+            contacts.push(response.data.data);
+          });
+        });
       });
-      this.contacts = contacts;
-    },
+      // Set time out to .5 seconds to avoid jump (sets this.contacts once data has been loaded) - Easiest solution :) 
+      setTimeout(() => {
+        this.contacts = contacts;
+      }, 500);
+    }
   },
 }
 </script>
