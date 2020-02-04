@@ -41,9 +41,10 @@
           <polyline points="22,6 12,13 2,6" />
         </svg>
         <span class="margin-left-2">{{contact.attributes.email}}</span>
+        <input type="text" v-model="contact.attributes.email" v-show="edit" />
       </div>
       <div class="button-container">
-        <button class="button is-info">Edit</button>
+        <button class="button is-info" @click="editContact">Edit</button>
         <button class="button is-danger" @click="remove">Delete</button>
       </div>
     </div>
@@ -52,6 +53,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      edit: false
+    };
+  },
   props: {
     contact: {
       required: true
@@ -60,6 +66,9 @@ export default {
   methods: {
     remove() {
       this.$emit("delete", this.contact.id); // Emit remove method to ViewProject.vue
+    },
+    editContact() {
+      this.edit = !this.edit;
     }
   }
 };
