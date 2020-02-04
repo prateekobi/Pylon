@@ -69,6 +69,7 @@ export default {
         .then(response => {
           console.log(response);
           this.$router.push(`/projects/${this.$route.params.project_id}`);
+          alert("Success, project updated!");
         })
         .catch(error => {
           console.log(error);
