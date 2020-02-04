@@ -16,10 +16,7 @@
         type="number"
         v-model="systemSize"
       />
-      <button
-        class="button is-info is-small"
-        @click="updateRecord(title, lat, lon, systemSize)"
-      >Save</button>
+      <button class="button is-info is-small" @click="updateRecord()">Save</button>
     </div>
   </div>
 </template>

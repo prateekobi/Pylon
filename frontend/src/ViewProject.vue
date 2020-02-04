@@ -47,6 +47,7 @@
           v-for="contact in contacts"
           :key="contact.id"
           :contact="contact"
+          @delete="remove"
           class="view-project__contact"
         />
       </div>
@@ -54,27 +55,10 @@
   </div>
 </template>
 
-<style>
-.view-project {
-  padding: 1rem;
-}
-
-.view-project__contact {
-  margin: 1rem 0;
-}
-
-.view-project__contact:first-child {
-  margin-top: 0;
-}
-
-.view-project__contact .level:not(:last-child) {
-  margin-bottom: 0.75rem;
-}
-</style>
-
 <script>
 import { http } from "./api.js";
 
+import axios from "axios";
 import ContactCard from "./ContactCard.vue";
 
 export default {
@@ -111,7 +95,34 @@ export default {
         let response = await http.get("/contacts/" + contact.id);
         this.contacts.push(response.data.data);
       });
+    },
+    // Remove method
+    remove(id) {
+      axios.delete(`http://0.0.0.0:11111/api/contacts/${id}`).then(() => {
+        let index = this.contacts.findIndex(contact => contact.id === id);
+        this.contacts.splice(index, 1);
+      });
     }
   }
 };
 </script>
+
+<style>
+.view-project {
+  padding: 1rem;
+}
+
+.view-project__contact {
+  margin: 1rem 0;
+}
+
+.view-project__contact:first-child {
+  margin-top: 0;
+}
+
+.view-project__contact .level:not(:last-child) {
+  margin-bottom: 0.75rem;
+}
+</style>
+
+
