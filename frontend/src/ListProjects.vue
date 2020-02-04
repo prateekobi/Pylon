@@ -1,12 +1,21 @@
 <template>
   <div class="view-projects">
-    <pagination v-if="pagination !== null" :data="pagination" v-model="page" @input="fetchListOfProjects" />
+    <pagination
+      v-if="pagination !== null"
+      :data="pagination"
+      v-model="page"
+      @input="fetchListOfProjects"
+    />
 
     <div v-if="projects !== null">
       <ul>
         <li v-for="project in projects" :key="project.id">
           <view-project-item :project="project" v-if="project.attributes" />
-          <div v-else class="view-projects__placeholder" :style="{'animation-delay': i * 50 + 'ms'}" />
+          <div
+            v-else
+            class="view-projects__placeholder"
+            :style="{'animation-delay': i * 50 + 'ms'}"
+          />
         </li>
       </ul>
     </div>
@@ -17,7 +26,6 @@
 .view-projects {
   padding: 1rem;
 }
-``
 .view-projects .pagination {
   padding: 0 1rem;
 }
@@ -47,33 +55,33 @@
   position: relative;
 }
 
-@keyframes placeHolderShimmer{
-    0%{
-        background-position: -468px 0
-    }
-    100%{
-        background-position: 468px 0
-    }
+@keyframes placeHolderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
 }
 </style>
 
 <script>
-import {http} from './api.js';
+import { http } from "./api.js";
 
-import Pagination from './Pagination.vue';
-import ViewProjectItem from './ViewProjectItem.vue';
+import Pagination from "./Pagination.vue";
+import ViewProjectItem from "./ViewProjectItem.vue";
 
 export default {
   components: {
     Pagination,
-    ViewProjectItem,
+    ViewProjectItem
   },
 
   data() {
     return {
       page: 1,
       pagination: null,
-      projects: null,
+      projects: null
     };
   },
 
@@ -83,8 +91,8 @@ export default {
 
   methods: {
     async fetchListOfProjects() {
-      let params = {page: this.page};
-      let response = await http.get('/solar_projects', {params});
+      let params = { page: this.page };
+      let response = await http.get("/solar_projects", { params });
       this.projects = response.data.data;
       this.pagination = response.data.meta;
       this.fetchAllProjectDetails();
@@ -93,12 +101,12 @@ export default {
     fetchAllProjectDetails() {
       this.projects.forEach(async (project, i) => {
         let id = project.id;
-        let response = await http.get('/solar_projects/' + id);
+        let response = await http.get("/solar_projects/" + id);
         if (this.projects[i] && this.projects[i].id === id) {
           this.projects.splice(i, 1, response.data.data);
         }
       });
-    },
-  },
-}
+    }
+  }
+};
 </script>

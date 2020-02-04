@@ -42,6 +42,7 @@ class SolarProjectsController extends Controller
                 'title' => 'string',
                 'site_latitude' => 'numeric',
                 'site_longitude' => 'numeric',
+                'system_details' => 'string'
             ]);
         } else {
             $data = $this->validate($request, [
@@ -49,6 +50,7 @@ class SolarProjectsController extends Controller
                 'title' => 'string|required',
                 'site_latitude' => 'numeric|required',
                 'site_longitude' => 'numeric|required',
+                'system_details' => 'string'
             ]);
         }
 
