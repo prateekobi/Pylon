@@ -47,7 +47,6 @@
           v-for="contact in contacts"
           :key="contact.id"
           :contact="contact"
-          @delete="remove"
           class="view-project__contact"
         />
       </div>
@@ -58,7 +57,7 @@
 <script>
 import { http } from "./api.js";
 
-import axios from "axios";
+// import axios from "axios";
 import ContactCard from "./ContactCard.vue";
 
 export default {
@@ -94,13 +93,6 @@ export default {
       response.data.data.forEach(async contact => {
         let response = await http.get("/contacts/" + contact.id);
         this.contacts.push(response.data.data);
-      });
-    },
-    // Remove method
-    remove(id) {
-      axios.delete(`http://0.0.0.0:11111/api/contacts/${id}`).then(() => {
-        let index = this.contacts.findIndex(contact => contact.id === id);
-        this.contacts.splice(index, 1);
       });
     }
   }

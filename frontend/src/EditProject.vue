@@ -1,22 +1,35 @@
 <template>
-  <div class="editWrapper">
-    <h2 class="editWrapper--heading">Edit: {{ title }}</h2>
-    <div class="editWrapper--wrapper">
-      Title:
-      <input class="editWrapper--input" type="text" v-model="title" />
+  <div class="editWrapper level">
+    <div class="editWrapper--wrapper level-left column">
+      <h2 class="editWrapper--heading level-left">Edit: {{ title }}</h2>Title:
+      <input class="input editWrapper--input" type="text" v-model="title" />
       system Details:
-      <input class="editWrapper--input" type="text" v-model="systemDetails" />
+      <input
+        class="input editWrapper--input"
+        type="text"
+        v-model="systemDetails"
+      />
       Site Latitude:
-      <input class="editWrapper--input" type="number" v-model="lat" />
+      <input class="input editWrapper--input" type="number" v-model="lat" />
       Site Longitude:
-      <input class="editWrapper--input" type="number" v-model="lon" />
+      <input class="input editWrapper--input" type="number" v-model="lon" />
       System Size *(leave blank for null):
       <input
-        class="editWrapper--input"
+        class="input editWrapper--input"
         type="number"
         v-model="systemSize"
       />
       <button class="button is-info is-small" @click="updateRecord()">Save</button>
+    </div>
+    <div class="column level-right">
+      <contact-card
+        v-for="contact in contacts"
+        :key="contact.id"
+        :contact="contact"
+        :show="true"
+        @delete="removeContact"
+        class="view-project__contact"
+      />
     </div>
   </div>
 </template>
@@ -24,11 +37,16 @@
 <script>
 import { http } from "./api.js";
 import axios from "axios";
+import ContactCard from "./ContactCard.vue";
 
 export default {
+  components: {
+    ContactCard
+  },
   data() {
     return {
       project: null,
+      contacts: [],
       title: "",
       systemDetails: "",
       lat: 0,
@@ -38,6 +56,7 @@ export default {
   },
   mounted() {
     this.fetchProjectDetails();
+    this.fetchProjectContacts();
   },
   methods: {
     async fetchProjectDetails() {
@@ -51,7 +70,17 @@ export default {
       this.systemSize = this.project.attributes.system_size;
       this.systemDetails = this.project.attributes.system_details;
     },
-    async updateRecord(id, title) {
+    async fetchProjectContacts() {
+      this.contacts = [];
+      let response = await http.get(
+        "/solar_projects/" + this.$route.params.project_id + "/contacts"
+      );
+      response.data.data.forEach(async contact => {
+        let response = await http.get("/contacts/" + contact.id);
+        this.contacts.push(response.data.data);
+      });
+    },
+    async updateRecord() {
       await axios
         .patch(
           `http://0.0.0.0:11111/api/solar_projects/${this.$route.params.project_id}`,
@@ -63,38 +92,30 @@ export default {
             system_details: this.systemDetails
           }
         )
-        .then(response => {
-          console.log(response);
+        .then(() => {
           this.$router.push(`/projects/${this.$route.params.project_id}`);
           alert("Success, project updated!");
-        })
-        .catch(error => {
-          console.log(error);
         });
+    },
+    removeContact(id) {
+      axios.delete(`http://0.0.0.0:11111/api/contacts/${id}`).then(() => {
+        let index = this.contacts.findIndex(contact => contact.id === id);
+        this.contacts.splice(index, 1);
+      });
     }
   }
 };
 </script>
 
 <style scoped>
-.editWrapper--wrapper {
-  width: 25%;
+.editWrapper {
+  margin: 30px 0 30px 0;
 }
 .editWrapper--heading {
   font-weight: 600;
   margin-bottom: 20px;
 }
-input[type="text"],
-input[type="number"] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  box-sizing: border-box;
-  border: 1px solid #555;
-}
-input[type="text"],
-input[type="number"]:focus {
-  outline: none;
-  border: 3px solid #555;
+.input {
+  margin-bottom: 20px;
 }
 </style>>
