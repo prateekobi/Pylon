@@ -19,7 +19,7 @@
         type="number"
         v-model="systemSize"
       />
-      <button class="button is-info is-small" @click="updateRecord()">Save</button>
+      <button class="button is-info" @click="updateRecord()">Save</button>
     </div>
     <div class="column level-right">
       <contact-card
@@ -28,7 +28,11 @@
         :contact="contact"
         :show="true"
         @delete="removeContact"
+        @edit="editContact"
         class="view-project__contact"
+        @first="firstName = $event"
+        @last="lastName = $event"
+        @email="email = $event"
       />
     </div>
   </div>
@@ -45,13 +49,17 @@ export default {
   },
   data() {
     return {
+      // Project data
       project: null,
       contacts: [],
       title: "",
       systemDetails: "",
       lat: 0,
       lon: 0,
-      systemSize: 0
+      systemSize: 0,
+      firstName: "",
+      lastName: "",
+      email: ""
     };
   },
   mounted() {
@@ -102,6 +110,19 @@ export default {
         let index = this.contacts.findIndex(contact => contact.id === id);
         this.contacts.splice(index, 1);
       });
+    },
+    editContact(id) {
+      var self = this;
+      axios
+        .put(`http://0.0.0.0:11111/api/contacts/${id}`, {
+          first_name: this.firstName,
+          last_name: this.lastName,
+          email: this.email
+        })
+        .then(() => {
+          console.log("here", this.contact);
+          alert("Contact edited!");
+        });
     }
   }
 };
@@ -117,5 +138,8 @@ export default {
 }
 .input {
   margin-bottom: 20px;
+}
+.view-project__contact {
+  margin-left: 20px;
 }
 </style>>

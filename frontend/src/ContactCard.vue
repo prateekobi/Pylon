@@ -18,8 +18,23 @@
           <circle cx="12" cy="7" r="4" />
         </svg>
         <span
+          v-if="!show"
           class="margin-left-2"
         >{{contact.attributes.first_name}} {{contact.attributes.last_name}}</span>
+        <input
+          v-if="show"
+          type="text"
+          class="input name is-small"
+          v-model="contact.attributes.first_name"
+          @input="$emit('first', $event.target.value)"
+        />
+        <input
+          v-if="show"
+          type="text"
+          class="input name is-small"
+          v-model="contact.attributes.last_name"
+          @input="$emit('last', $event.target.value)"
+        />
       </div>
     </div>
 
@@ -41,8 +56,15 @@
           <polyline points="22,6 12,13 2,6" />
         </svg>
         <span v-if="!show" class="margin-left-2">{{contact.attributes.email}}</span>
-        <input v-if="show" type="text" class="input is-small" v-model="contact.attributes.email" />
+        <input
+          v-if="show"
+          type="text"
+          class="input is-small"
+          v-model="contact.attributes.email"
+          @input="$emit('email', $event.target.value)"
+        />
       </div>
+      <button v-if="show" class="button is-info" @click="editContact">Edit</button>
       <button v-if="show" class="button is-danger" @click="removeContact">Delete</button>
     </div>
   </div>
@@ -61,7 +83,10 @@ export default {
   },
   methods: {
     removeContact() {
-      this.$emit("delete", this.contact.id); // Emit remove method to EditProject.vue
+      this.$emit("delete", this.contact.id); // Emit removeContact method to EditProject.vue
+    },
+    editContact() {
+      this.$emit("edit", this.contact.id); // Emit editContact method to EditProject.vue
     }
   }
 };
@@ -70,5 +95,8 @@ export default {
 .input {
   width: 300px;
   margin-left: 10px;
+}
+input.name {
+  width: 200px;
 }
 </style>

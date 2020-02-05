@@ -22,5 +22,6 @@ Route::apiResource('solar_projects', 'SolarProjectsController');
 Route::get('/solar_projects/{solar_project}/contacts', 'SolarProjectContactsController@index');
 Route::put('/solar_projects/{solar_project}/contacts', 'SolarProjectContactsController@update');
 Route::patch('/solar_projects/{id}', 'SolarProjectsController@update');
+Route::put('/contacts/{id}', 'SolarProjectContactsController@update');
 
 
