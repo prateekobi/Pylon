@@ -6,9 +6,25 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 use App\Models\SolarProject;
+use App\Models\Contact;
 
 class SolarProjectsTest extends TestCase
 {
+    public function testEditLastName() {
+        
+        $id = Contact::first()->uuid;
+        $lastName = Contact::first()->last_name;
+
+        $this->assertEquals($lastName, $lastName); // Before PUT request (edit)
+        $response = $this->json('PUT', "api/contacts/$id", [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john@gmail.com'
+        ]);
+
+        $this->assertEquals($lastName, 'Doe'); // After PUT request last name changed to Doe
+    }
+
     public function testIndex()
     {
         $response = $this->get('/api/solar_projects');
