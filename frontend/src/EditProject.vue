@@ -30,9 +30,6 @@
         @delete="removeContact"
         @edit="editContact"
         class="view-project__contact"
-        @first="firstName = $event"
-        @last="lastName = $event"
-        @email="email = $event"
       />
     </div>
   </div>
@@ -56,10 +53,10 @@ export default {
       systemDetails: "",
       lat: 0,
       lon: 0,
-      systemSize: 0,
-      firstName: "",
-      lastName: "",
-      email: ""
+      systemSize: 0
+      // firstName: "",
+      // lastName: "",
+      // email: ""
     };
   },
   mounted() {
@@ -67,6 +64,9 @@ export default {
     this.fetchProjectContacts();
   },
   methods: {
+    test(value) {
+      console.log("Value: ", value);
+    },
     async fetchProjectDetails() {
       let response = await http.get(
         `/solar_projects/${this.$route.params.project_id}`
@@ -111,16 +111,15 @@ export default {
         this.contacts.splice(index, 1);
       });
     },
-    editContact(id) {
+    editContact(value) {
       var self = this;
       axios
-        .put(`http://0.0.0.0:11111/api/contacts/${id}`, {
-          first_name: this.firstName,
-          last_name: this.lastName,
-          email: this.email
+        .put(`http://0.0.0.0:11111/api/contacts/${value.id}`, {
+          first_name: value.first,
+          last_name: value.last,
+          email: value.email
         })
         .then(() => {
-          console.log("here", this.contact);
           alert("Contact edited!");
         });
     }

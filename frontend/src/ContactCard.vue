@@ -56,13 +56,7 @@
           <polyline points="22,6 12,13 2,6" />
         </svg>
         <span v-if="!show" class="margin-left-2">{{contact.attributes.email}}</span>
-        <input
-          v-if="show"
-          type="text"
-          class="input is-small"
-          v-model="contact.attributes.email"
-          @input="$emit('email', $event.target.value)"
-        />
+        <input v-if="show" type="text" class="input is-small" v-model="contact.attributes.email" />
       </div>
       <button v-if="show" class="button is-info" @click="editContact">Edit</button>
       <button v-if="show" class="button is-danger" @click="removeContact">Delete</button>
@@ -79,6 +73,18 @@ export default {
     show: {
       type: Boolean,
       default: false
+    },
+    email: {
+      type: String,
+      default: ""
+    },
+    first: {
+      type: String,
+      default: ""
+    },
+    last: {
+      type: String,
+      default: ""
     }
   },
   methods: {
@@ -86,7 +92,17 @@ export default {
       this.$emit("delete", this.contact.id); // Emit removeContact method to EditProject.vue
     },
     editContact() {
-      this.$emit("edit", this.contact.id); // Emit editContact method to EditProject.vue
+      let obj = {};
+      obj.id = this.contact.id;
+      obj.email = this.contact.attributes.email;
+      obj.first = this.contact.attributes.first_name;
+      obj.last = this.contact.attributes.last_name;
+      console.log(obj);
+      // this.email = this.contact.attributes.email;
+      // this.first = this.contact.attributes.first_name;
+      // this.last = this.contact;
+      // this.$emit("inputs", obj);
+      this.$emit("edit", obj); // Emit editContact method to EditProject.vue
     }
   }
 };
