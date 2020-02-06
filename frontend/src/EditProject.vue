@@ -54,9 +54,6 @@ export default {
       lat: 0,
       lon: 0,
       systemSize: 0
-      // firstName: "",
-      // lastName: "",
-      // email: ""
     };
   },
   mounted() {
@@ -64,9 +61,6 @@ export default {
     this.fetchProjectContacts();
   },
   methods: {
-    test(value) {
-      console.log("Value: ", value);
-    },
     async fetchProjectDetails() {
       let response = await http.get(
         `/solar_projects/${this.$route.params.project_id}`
