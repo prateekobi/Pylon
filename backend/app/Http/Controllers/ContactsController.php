@@ -51,7 +51,7 @@ class ContactsController extends Controller
         } else {
             $data = $this->validate($request, [
                 'first_name' => 'string|required|max:255',
-                'first_name' => 'string|present|max:255',
+                'last_name' => 'string|present|max:255',
                 'email' => 'string|present|max:255',
             ]);
         }
