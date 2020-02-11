@@ -11,11 +11,7 @@
       <ul>
         <li v-for="project in projects" :key="project.id">
           <view-project-item :project="project" v-if="project.attributes" />
-          <div
-            v-else
-            class="view-projects__placeholder"
-            :style="{'animation-delay': i * 50 + 'ms'}"
-          />
+          <div v-else class="view-projects__placeholder" />
         </li>
       </ul>
     </div>

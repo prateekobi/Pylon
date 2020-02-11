@@ -1,6 +1,11 @@
 <template>
   <div class="list-contacts">
-    <pagination v-if="pagination !== null" :data="pagination" v-model="page" @input="fetchContacts" />
+    <pagination
+      v-if="pagination !== null"
+      :data="pagination"
+      v-model="page"
+      @input="fetchContacts"
+    />
 
     <div v-if="contacts !== null">
       <table class="table is-fullwidth">
@@ -23,19 +28,19 @@
 </style>
 
 <script>
-import axios from 'axios'; // Import axios
-import Pagination from './Pagination.vue';
+import axios from "axios"; // Import axios
+import Pagination from "./Pagination.vue";
 
 export default {
   components: {
-    Pagination,
+    Pagination
   },
 
   data() {
     return {
       page: 1,
       pagination: null,
-      contacts: null,
+      contacts: null
     };
   },
 

@@ -106,7 +106,6 @@ export default {
       });
     },
     editContact(value) {
-      var self = this;
       axios
         .put(`http://0.0.0.0:11111/api/contacts/${value.id}`, {
           first_name: value.first,

@@ -97,11 +97,6 @@ export default {
       obj.email = this.contact.attributes.email;
       obj.first = this.contact.attributes.first_name;
       obj.last = this.contact.attributes.last_name;
-      console.log(obj);
-      // this.email = this.contact.attributes.email;
-      // this.first = this.contact.attributes.first_name;
-      // this.last = this.contact;
-      // this.$emit("inputs", obj);
       this.$emit("edit", obj); // Emit editContact method to EditProject.vue
     }
   }
