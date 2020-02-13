@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\Contact;
 
 class ContactTest extends TestCase
 {
@@ -13,10 +14,21 @@ class ContactTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
-    {
-        $response = $this->get('/');
+    public function testEditLastName() {
+        $id = Contact::first()->uuid;
 
-        $response->assertStatus(200);
+        $response = $this->json('PUT', "api/contacts/$id", [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john@gmail.com'
+        ])
+         ->assertStatus(200)
+         ->assertJson([
+             'data' => [
+                 'attributes' => [
+                     'last_name' => 'Doe'
+                 ]
+             ]
+             ]);
     }
 }
