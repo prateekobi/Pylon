@@ -14,7 +14,8 @@ class ContactTest extends TestCase
      *
      * @return void
      */
-    public function testEditLastName() {
+    public function testEditLastName()
+    {
         $id = Contact::first()->uuid;
 
         $response = $this->json('PUT', "api/contacts/$id", [
@@ -22,13 +23,13 @@ class ContactTest extends TestCase
             'last_name' => 'Doe',
             'email' => 'john@gmail.com'
         ])
-         ->assertStatus(200)
-         ->assertJson([
-             'data' => [
-                 'attributes' => [
-                     'last_name' => 'Doe'
-                 ]
-             ]
-             ]);
+            ->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'attributes' => [
+                        'last_name' => 'Doe'
+                    ]
+                ]
+            ]);
     }
 }
